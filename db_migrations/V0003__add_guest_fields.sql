@@ -1,0 +1,2 @@
+ALTER TABLE t_p55733046_creative_sphere_proj.users ADD COLUMN IF NOT EXISTS guest_id VARCHAR(64) UNIQUE;
+ALTER TABLE t_p55733046_creative_sphere_proj.users ADD COLUMN IF NOT EXISTS nickname VARCHAR(100);

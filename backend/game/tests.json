@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "guest_register создаёт аккаунт",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "guest_register"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "spin без сессии — 401",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "spin", "bet": 10},
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

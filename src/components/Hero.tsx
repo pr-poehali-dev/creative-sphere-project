@@ -1,7 +1,7 @@
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 
-export default function Hero({ onPlayClick }: { onPlayClick?: () => void }) {
+export default function Hero({ onPlayClick, registering }: { onPlayClick?: () => void; registering?: boolean }) {
   const container = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: container,
@@ -34,8 +34,9 @@ export default function Hero({ onPlayClick }: { onPlayClick?: () => void }) {
         <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 mb-10 text-neutral-200">
           Сотни игровых слотов, щедрые бонусы и мгновенные выплаты. Удача уже ждёт тебя.
         </p>
-        <button onClick={onPlayClick} className="bg-yellow-400 text-black font-bold px-10 py-4 text-sm uppercase tracking-wide hover:bg-yellow-300 transition-colors duration-300 cursor-pointer">
-          Играть сейчас
+        <button onClick={onPlayClick} disabled={registering}
+          className="bg-yellow-400 text-black font-bold px-10 py-4 text-sm uppercase tracking-wide hover:bg-yellow-300 transition-colors duration-300 cursor-pointer disabled:opacity-70 disabled:cursor-wait min-w-[200px]">
+          {registering ? '⏳ Создаём аккаунт...' : '🎰 Играть сейчас'}
         </button>
       </div>
     </div>

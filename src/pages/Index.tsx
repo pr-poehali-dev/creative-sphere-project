@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Featured from '@/components/Featured';
 import Promo from '@/components/Promo';
 import Footer from '@/components/Footer';
-import LoginModal from '@/components/LoginModal';
 import WithdrawModal from '@/components/WithdrawModal';
-import { getMe, logout } from '@/lib/api';
+import { getMe, guestRegister, logout } from '@/lib/api';
 
 interface User {
   id?: number;
-  name: string;
-  email: string;
-  avatar: string;
+  name?: string;
+  nickname?: string;
+  email?: string;
+  avatar?: string;
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [showLogin, setShowLogin] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
+  const [registering, setRegistering] = useState(false);
 
   useEffect(() => {
     const session = localStorage.getItem('session');
@@ -30,6 +32,20 @@ const Index = () => {
     }
   }, []);
 
+  async function handlePlay() {
+    if (localStorage.getItem('session')) {
+      navigate('/game');
+      return;
+    }
+    setRegistering(true);
+    const res = await guestRegister();
+    setRegistering(false);
+    if (res.ok) {
+      setUser({ nickname: res.user.nickname });
+      navigate('/game');
+    }
+  }
+
   function handleLogout() {
     logout();
     setUser(null);
@@ -39,26 +55,21 @@ const Index = () => {
     <main className="min-h-screen">
       <Header
         user={user}
-        onLoginClick={() => setShowLogin(true)}
+        onLoginClick={handlePlay}
         onLogout={handleLogout}
         onWithdrawClick={() => setShowWithdraw(true)}
+        onPlayClick={() => navigate('/game')}
       />
-      <Hero onPlayClick={() => setShowLogin(true)} />
-      <Featured onBonusClick={() => setShowLogin(true)} />
+      <Hero onPlayClick={handlePlay} registering={registering} />
+      <Featured onBonusClick={handlePlay} />
       <Promo />
       <Footer />
 
-      {showLogin && (
-        <LoginModal
-          onClose={() => setShowLogin(false)}
-          onSuccess={u => setUser(u)}
-        />
-      )}
       {showWithdraw && (
         <WithdrawModal
           onClose={() => setShowWithdraw(false)}
           isLoggedIn={!!user}
-          onNeedLogin={() => setShowLogin(true)}
+          onNeedLogin={handlePlay}
         />
       )}
     </main>
