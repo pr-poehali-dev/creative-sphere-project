@@ -18,7 +18,7 @@ def get_db():
 
 def get_user_by_session(cur, session_id: str):
     cur.execute(
-        f"SELECT u.id, u.email, u.name, u.balance FROM {SCHEMA}.users u "
+        f"SELECT u.id, u.email, u.name, u.nickname, u.balance FROM {SCHEMA}.users u "
         f"JOIN {SCHEMA}.sessions s ON s.user_id = u.id "
         f"WHERE s.id = %s AND s.expires_at > NOW()",
         (session_id,)
@@ -78,7 +78,8 @@ def handler(event: dict, context) -> dict:
             conn.close()
             return {'statusCode': 401, 'headers': CORS, 'body': json.dumps({'ok': False, 'error': 'Сессия истекла'})}
 
-        user_id, email, name, balance = user
+        user_id, email, name, nickname, balance = user
+        display_name = nickname or name or email or f'ID {user_id}'
         amount = float(body.get('amount', 0))
         bank = body.get('bank', '').strip()
         phone = body.get('phone', '').strip()
@@ -108,12 +109,12 @@ def handler(event: dict, context) -> dict:
         conn.close()
 
         msg = (
-            f"💸 <b>Новая заявка на вывод #{request_id}</b>\n\n"
-            f"👤 Пользователь: {name or 'Без имени'} ({email})\n"
+            f"💸 <b>Заявка на вывод #{request_id}</b>\n\n"
+            f"👤 Игрок: {display_name}\n"
             f"💰 Сумма: <b>{amount:.0f} ₽</b>\n"
-            f"🏦 Банк: {bank}\n"
-            f"📱 Номер СБП: {phone}\n\n"
-            f"Переведите {amount:.0f} ₽ на номер {phone} ({bank})"
+            f"🏦 Банк (СБП): {bank}\n"
+            f"📱 Номер: <b>{phone}</b>\n\n"
+            f"➡️ Переведи {amount:.0f} ₽ на {phone} через СБП ({bank})"
         )
         send_telegram(msg)
 
