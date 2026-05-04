@@ -1,0 +1,28 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "get_balance без сессии — 401",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "get_balance"},
+      "expectedStatus": 401,
+      "expectedBody": {"ok": false},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "withdraw без сессии — 401",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "withdraw", "amount": 500, "bank": "Сбербанк", "phone": "79001234567"},
+      "expectedStatus": 401,
+      "expectedBody": {"ok": false},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

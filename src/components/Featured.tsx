@@ -5,7 +5,7 @@ const advantages = [
   { icon: "🎮", title: "500+ слотов", desc: "Pragmatic Play, NetEnt, Playtech и другие топовые провайдеры" },
 ];
 
-export default function Featured() {
+export default function Featured({ onBonusClick }: { onBonusClick?: () => void }) {
   return (
     <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center min-h-screen px-6 py-12 lg:py-0 bg-neutral-950">
       <div className="flex-1 h-[400px] lg:h-[800px] mb-8 lg:mb-0 lg:order-2">
@@ -29,7 +29,7 @@ export default function Featured() {
             </div>
           ))}
         </div>
-        <button className="bg-yellow-400 text-black px-8 py-3 text-sm transition-all duration-300 hover:bg-yellow-300 cursor-pointer w-fit uppercase tracking-wide font-bold">
+        <button onClick={onBonusClick} className="bg-yellow-400 text-black px-8 py-3 text-sm transition-all duration-300 hover:bg-yellow-300 cursor-pointer w-fit uppercase tracking-wide font-bold">
           Получить бонус
         </button>
       </div>
