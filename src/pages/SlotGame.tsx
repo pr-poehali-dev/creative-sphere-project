@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getGameState, spin } from '@/lib/api';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
+import DepositModal from '@/components/DepositModal';
 
 const SYMBOLS = ['🍒', '🍋', '🍊', '🍇', '⭐', '🔔', '💎', '7️⃣'];
 const BETS = [5, 10, 25, 50, 100];
@@ -45,6 +46,7 @@ export default function SlotGame() {
   const [lastWin, setLastWin] = useState<number | null>(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showDeposit, setShowDeposit] = useState(false);
 
   useEffect(() => {
     const session = localStorage.getItem('session');
@@ -104,9 +106,17 @@ export default function SlotGame() {
           На главную
         </button>
         <div className="text-yellow-400 font-bold text-sm uppercase tracking-widest">🎰 LuckySlots</div>
-        <div className="text-right">
-          <div className="text-xs text-neutral-400">{nickname}</div>
-          <div className="text-yellow-400 font-bold">{balance.toFixed(0)} ₽</div>
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <div className="text-xs text-neutral-400">{nickname}</div>
+            <div className="text-yellow-400 font-bold">{balance.toFixed(0)} ₽</div>
+          </div>
+          <button
+            onClick={() => setShowDeposit(true)}
+            className="bg-yellow-400 text-black text-xs font-bold uppercase px-3 py-2 hover:bg-yellow-300 transition-colors"
+          >
+            + Пополнить
+          </button>
         </div>
       </div>
 
@@ -147,6 +157,15 @@ export default function SlotGame() {
           >
             {spinning ? '⏳ Крутим...' : balance < bet ? 'Недостаточно средств' : '🎰 КРУТИТЬ'}
           </button>
+
+          {balance < bet && !spinning && (
+            <button
+              onClick={() => setShowDeposit(true)}
+              className="w-full py-3 text-sm font-bold uppercase tracking-wide rounded-xl bg-neutral-800 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all duration-200 cursor-pointer mt-2"
+            >
+              💳 Пополнить баланс
+            </button>
+          )}
         </div>
 
         {/* Bet selector */}
@@ -180,6 +199,8 @@ export default function SlotGame() {
           </div>
         </div>
       </div>
+
+      {showDeposit && <DepositModal onClose={() => setShowDeposit(false)} />}
     </div>
   );
 }
