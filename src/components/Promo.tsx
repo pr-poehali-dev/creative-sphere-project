@@ -15,7 +15,7 @@ export default function Promo() {
       className="relative flex items-center justify-center h-screen overflow-hidden"
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
-      <div className="fixed top-[-10vh] left-0 h-[120vh] w-full">
+      <div className="fixed top-[-10vh] left-0 h-[120vh] w-full pointer-events-none">
         <motion.div style={{ y }} className="relative w-full h-full">
           <img
             src="/images/spiral-circles.jpg"
