@@ -19,19 +19,24 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full"
       >
         <img
-          src="/images/mountain-landscape.jpg"
-          alt="Mountain landscape"
+          src="https://cdn.poehali.dev/projects/a4412636-f39f-4265-b857-656739fd9327/files/8b4fb35d-2399-4ab8-81d0-ab5555c2782c.jpg"
+          alt="Casino slot machines"
           className="w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/50" />
       </motion.div>
 
-      <div className="relative z-10 text-center text-white">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
-          ОТКРОЙ
+      <div className="relative z-10 text-center text-white px-6">
+        <p className="text-sm uppercase tracking-[0.3em] mb-4 text-yellow-400 font-medium">Лучшие онлайн-слоты</p>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-none">
+          СОРВИ<br /><span className="text-yellow-400">ДЖЕКПОТ</span>
         </h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto px-6 opacity-90">
-          Исследуй границы дизайна с иммерсивным параллакс-эффектом
+        <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 mb-10 text-neutral-200">
+          Сотни игровых слотов, щедрые бонусы и мгновенные выплаты. Удача уже ждёт тебя.
         </p>
+        <button className="bg-yellow-400 text-black font-bold px-10 py-4 text-sm uppercase tracking-wide hover:bg-yellow-300 transition-colors duration-300 cursor-pointer">
+          Играть сейчас
+        </button>
       </div>
     </div>
   );
